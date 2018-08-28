@@ -22,11 +22,30 @@ class OpenLayers3Map extends React.Component {
   constructor(props) {
     super(props)
     this.map = null
+    this.layer = null
+    this.idSource = null
   }
 
   updateStyle(newMapStyle) {
     const olms = require('ol-mapbox-style');
-    const styleFunc = olms.apply(this.map, newMapStyle)
+
+    const map = this.map;
+    const layer = this.layer;
+
+    olms.applyStyle(layer, newMapStyle, this.idSource)
+    .then(function () {
+        var copyLayer = layer;
+        map.removeLayer(layer);
+        map.addLayer(copyLayer);
+    })
+    .then(function () {
+        // FIXME ?
+        map.getView().setCenter(newMapStyle.center);
+        map.getView().setZoom(newMapStyle.zoom);
+    })
+    .catch(function (error) {
+        map.addLayer(layer);
+    });
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -39,23 +58,60 @@ class OpenLayers3Map extends React.Component {
   componentDidMount() {
     //Load OpenLayers dynamically once we need it
     //TODO: Make this more convenient
-    require.ensure(["ol", "ol/map", "ol/view", "ol/control/zoom", "ol-mapbox-style"], ()=> {
+    require.ensure(["ol", "ol-mapbox-style"], ()=> {
       console.log('Loaded OpenLayers3 renderer')
 
-      const olMap = require('ol/map').default
-      const olView = require('ol/view').default
-      const olZoom = require('ol/control/zoom').default
+      const olMap = require('ol/Map').default
+      const olView = require('ol/View').default
+      const olVectorTileLayer = require('ol/layer/VectorTile').default
+      const olTileLayer = require('ol/layer/Tile').default
+      const olVectorTile = require('ol/source/VectorTile').default
+      const OSM = require('ol/source/OSM').default
+      const MVT = require('ol/format/MVT').default
+      const GeoJSON = require('ol/format/GeoJSON').default
+      const olTileGrid = require('ol/tilegrid/TileGrid').default
+      const olMousePosition = require('ol/control/MousePosition').default
+      const olCoordinate = require('ol/coordinate')
+
+      const id = Object.keys(this.props.mapStyle.sources)[0]; // FIXME only first sources !
+      const type = (this.props.mapStyle.sources[id].type === 'vector') ? true : false
+
+      const layer = new olVectorTileLayer({
+          source : new olVectorTile({
+              tilePixelRatio: 1,
+              format: type ? new MVT() : new GeoJSON(),
+              url: type ? this.props.mapStyle.sources[id].url : this.props.mapStyle.sources[id].data
+          }),
+          declutter: true
+      })
+
+      var mousePositionControl = new olMousePosition({
+        coordinateFormat: olCoordinate.createStringXY(4),
+        projection: 'EPSG:4326',
+        undefinedHTML: '&nbsp;'
+      });
 
       const map = new olMap({
         target: this.container,
-        layers: [],
+        layers: [
+            new olTileLayer({
+                title: 'OSM',
+                source: new OSM(),
+                opacity: 0.5
+            })
+        ],
         view: new olView({
-          zoom: 2,
-          center: [52.5, -78.4]
+          zoom: this.props.mapStyle.zoom || 5,
+          center: this.props.mapStyle.center || [2.5, 48.4]
         })
       })
-      map.addControl(new olZoom())
+
+      map.addControl(mousePositionControl)
+
       this.map = map
+      this.layer = layer
+      this.idSource = id
+
       this.updateStyle(this.props.mapStyle)
     })
   }

@@ -50,21 +50,21 @@ class SettingsModal extends React.Component {
       <div style={{minWidth: 350}}>
       <InputBlock label={"Name"} doc={styleSpec.latest.$root.name.doc}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.name" 
+          data-wd-key="modal-settings.name"
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
         />
       </InputBlock>
       <InputBlock label={"Owner"} doc={"Owner ID of the style. Used by Mapbox or future style APIs."}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.owner" 
+          data-wd-key="modal-settings.owner"
           value={this.props.mapStyle.owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
       <InputBlock label={"Sprite URL"} doc={styleSpec.latest.$root.sprite.doc}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.sprite" 
+          data-wd-key="modal-settings.sprite"
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
@@ -72,7 +72,7 @@ class SettingsModal extends React.Component {
 
       <InputBlock label={"Glyphs URL"} doc={styleSpec.latest.$root.glyphs.doc}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.glyphs" 
+          data-wd-key="modal-settings.glyphs"
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
@@ -80,7 +80,7 @@ class SettingsModal extends React.Component {
 
       <InputBlock label={"Mapbox Access Token"} doc={"Public access token for Mapbox services."}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:mapbox_access_token" 
+          data-wd-key="modal-settings.maputnik:mapbox_access_token"
           value={metadata['maputnik:mapbox_access_token']}
           onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
         />
@@ -88,7 +88,7 @@ class SettingsModal extends React.Component {
 
       <InputBlock label={"OpenMapTiles Access Token"} doc={"Public access token for the OpenMapTiles CDN."}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
+          data-wd-key="modal-settings.maputnik:openmaptiles_access_token"
           value={metadata['maputnik:openmaptiles_access_token']}
           onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
@@ -96,7 +96,7 @@ class SettingsModal extends React.Component {
 
       <InputBlock label={"Thunderforest Access Token"} doc={"Public access token for Thunderforest services."}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
+          data-wd-key="modal-settings.maputnik:thunderforest_access_token"
           value={metadata['maputnik:thunderforest_access_token']}
           onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
@@ -104,12 +104,12 @@ class SettingsModal extends React.Component {
 
       <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
         <SelectInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:renderer" 
+          data-wd-key="modal-settings.maputnik:renderer"
           options={[
             ['mbgljs', 'MapboxGL JS'],
             ['ol3', 'Open Layers 3'],
           ]}
-          value={metadata['maputnik:renderer'] || 'mbgljs'}
+          value={metadata['maputnik:renderer'] || 'ol3'}
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>

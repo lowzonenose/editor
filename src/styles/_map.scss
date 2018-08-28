@@ -1,13 +1,17 @@
 //OPENLAYERS
 .maputnik-layout {
+
   .ol-zoom {
     top: 10px;
-    right: 10px;
-    left: auto;
+    left: 230px;
   }
 
   .ol-attribution.ol-logo-only {
     height: 20px;
+  }
+
+  .ol-mouse-position {
+      background: rgb(28, 31, 36);
   }
 
   .ol-control {

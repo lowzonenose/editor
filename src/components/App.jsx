@@ -59,7 +59,7 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
-    
+
     const keyCodes = {
       "esc": 27,
       "?": 191,
@@ -417,7 +417,7 @@ export default class App extends React.Component {
     }
 
     const metadata = this.state.mapStyle.metadata || {}
-    const renderer = metadata['maputnik:renderer'] || 'mbgljs'
+    const renderer = metadata['maputnik:renderer'] || 'ol3'
 
     let mapElement;
 

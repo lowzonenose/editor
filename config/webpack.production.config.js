@@ -74,6 +74,10 @@ module.exports = {
       {
         from: './src/manifest.json',
         to: 'manifest.json'
+      },
+      {
+          from : "data/**/*",
+          to : "./",
       }
     ]),
     new BundleAnalyzerPlugin({

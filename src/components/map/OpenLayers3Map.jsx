@@ -34,8 +34,13 @@ class OpenLayers3Map extends React.Component {
 
     olms.applyStyle(layer, newMapStyle, this.idSource)
     .then(function () {
+        // map.getLayers().forEach(function (lyr) {
+        //     if (lyr.getProperties().id !== 'OSM') {
+        //         map.removeLayer(lyr);
+        //     }
+        // });
         var copyLayer = layer;
-        map.removeLayer(layer);
+        map.addLayer(layer);
         map.addLayer(copyLayer);
     })
     .then(function () {
@@ -77,6 +82,7 @@ class OpenLayers3Map extends React.Component {
       const type = (this.props.mapStyle.sources[id].type === 'vector') ? true : false
 
       const layer = new olVectorTileLayer({
+          id: 'current',
           source : new olVectorTile({
               tilePixelRatio: 1,
               format: type ? new MVT() : new GeoJSON(),
@@ -95,6 +101,7 @@ class OpenLayers3Map extends React.Component {
         target: this.container,
         layers: [
             new olTileLayer({
+                id: 'OSM',
                 title: 'OSM',
                 source: new OSM(),
                 opacity: 0.5

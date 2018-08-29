@@ -417,7 +417,7 @@ export default class App extends React.Component {
     }
 
     const metadata = this.state.mapStyle.metadata || {}
-    const renderer = metadata['maputnik:renderer'] || 'ol3'
+    const renderer = metadata['maputnik:renderer'] || 'mbgljs'
 
     let mapElement;
 

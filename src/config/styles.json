@@ -1,5 +1,11 @@
 [
   {
+    "id": "geojson-basic",
+    "title": "GeoJSON Basic Sample",
+    "url": "https://rawgit.com/lowzonenose/editor/master/data/mapbox-states-test1.json",
+    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
+  },
+  {
     "id": "klokantech-basic",
     "title": "Klokantech Basic",
     "url": "https://rawgit.com/openmaptiles/klokantech-basic-gl-style/master/style.json",

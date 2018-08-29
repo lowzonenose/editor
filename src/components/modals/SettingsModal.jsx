@@ -109,7 +109,7 @@ class SettingsModal extends React.Component {
             ['mbgljs', 'MapboxGL JS'],
             ['ol3', 'Open Layers 3'],
           ]}
-          value={metadata['maputnik:renderer'] || 'ol3'}
+          value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>

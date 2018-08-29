@@ -34,14 +34,14 @@ class OpenLayers3Map extends React.Component {
 
     olms.applyStyle(layer, newMapStyle, this.idSource)
     .then(function () {
-        // map.getLayers().forEach(function (lyr) {
-        //     if (lyr.getProperties().id !== 'OSM') {
-        //         map.removeLayer(lyr);
-        //     }
-        // });
-        var copyLayer = layer;
+        map.getLayers().forEach(function (lyr) {
+           if (lyr.getProperties().id !== 'OSM') {
+                 map.removeLayer(lyr);
+           }
+        });
+    })
+    .then(function () {
         map.addLayer(layer);
-        map.addLayer(copyLayer);
     })
     .then(function () {
         // FIXME ?
@@ -78,8 +78,12 @@ class OpenLayers3Map extends React.Component {
       const olMousePosition = require('ol/control/MousePosition').default
       const olCoordinate = require('ol/coordinate')
 
-      const id = Object.keys(this.props.mapStyle.sources)[0]; // FIXME only first sources !
-      const type = (this.props.mapStyle.sources[id].type === 'vector') ? true : false
+      const mapboxSources = this.props.mapStyle.sources;
+      var id, type;
+      if (mapboxSources && Object.keys(mapboxSources).length > 0) {
+        id = Object.keys(this.props.mapStyle.sources)[0]; // FIXME only first sources !
+        type = (this.props.mapStyle.sources[id].type === 'vector') ? true : false
+      }
 
       const layer = new olVectorTileLayer({
           id: 'current',

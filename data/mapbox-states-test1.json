@@ -1,7 +1,7 @@
 {
   "version": 8,
   "pitch": 0,
-  "sprite": "./data/sprite/sprite-states",
+  "sprite": "https://rawgit.com/lowzonenose/editor/master/data/sprite/sprite-states",
   "name": "states",
   "bearing": 0,
   "zoom": 3,
@@ -12,7 +12,7 @@
   "sources": {
     "states": {
       "type": "geojson",
-      "data": "./data/states.geojson",
+      "data": "https://rawgit.com/lowzonenose/editor/master/data/states.geojson",
       "maxzoom": 18,
       "buffer": 128,
       "tolerance": 0.375,

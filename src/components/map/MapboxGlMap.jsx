@@ -151,6 +151,14 @@ export default class MapboxGlMap extends React.Component {
     })
     map.addControl(inspect)
 
+    // Add geolocate control to the map.
+    map.addControl(new MapboxGl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    }));
+
     map.on("style.load", () => {
       this.setState({ map, inspect });
     })
@@ -161,6 +169,7 @@ export default class MapboxGlMap extends React.Component {
         map: this.state.map
       })
     })
+
   }
 
   render() {

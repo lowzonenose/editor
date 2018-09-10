@@ -30,27 +30,25 @@ class OpenLayers3Map extends React.Component {
     const olms = require('ol-mapbox-style');
 
     const map = this.map;
-    const layer = this.layer;
 
-    olms.applyStyle(layer, newMapStyle, this.idSource)
-    .then(function () {
-        map.getLayers().forEach(function (lyr) {
-           if (lyr.getProperties().id !== 'OSM') {
-                 map.removeLayer(lyr);
-           }
+    olms.apply(this.map, newMapStyle);
+
+    /*
+        map.getLayers().forEach(function (layer) {
+            var source = layer.get("mapbox-source");
+            if source() {
+                olms.applyStyle(layer, newMapStyle, source)
+                .then(function () {
+                    map.removeLayer(layer);
+                    map.addLayer(layer);
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+            }
         });
-    })
-    .then(function () {
-        map.addLayer(layer);
-    })
-    .then(function () {
-        // FIXME ?
-        map.getView().setCenter(newMapStyle.center);
-        map.getView().setZoom(newMapStyle.zoom);
-    })
-    .catch(function (error) {
-        map.addLayer(layer);
-    });
+    */
+
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -77,28 +75,19 @@ class OpenLayers3Map extends React.Component {
       const olTileGrid = require('ol/tilegrid/TileGrid').default
       const olMousePosition = require('ol/control/MousePosition').default
       const olCoordinate = require('ol/coordinate')
-
-      const mapboxSources = this.props.mapStyle.sources;
-      var id, type;
-      if (mapboxSources && Object.keys(mapboxSources).length > 0) {
-        id = Object.keys(this.props.mapStyle.sources)[0]; // FIXME only first sources !
-        type = (this.props.mapStyle.sources[id].type === 'vector') ? true : false
-      }
-
-      const layer = new olVectorTileLayer({
-          id: 'current',
-          source : new olVectorTile({
-              tilePixelRatio: 1,
-              format: type ? new MVT() : new GeoJSON(),
-              url: type ? this.props.mapStyle.sources[id].url : this.props.mapStyle.sources[id].data
-          }),
-          declutter: true
-      })
+      const olGeolocation = require('ol/Geolocation').default
+      const olTileJSON = require('ol/source/TileJSON').default
+      const olObserable = require('ol/Observable');
 
       var mousePositionControl = new olMousePosition({
-        coordinateFormat: olCoordinate.createStringXY(4),
-        projection: 'EPSG:4326',
-        undefinedHTML: '&nbsp;'
+         coordinateFormat: olCoordinate.createStringXY(4),
+         projection: 'EPSG:4326',
+         undefinedHTML: '&nbsp;'
+      });
+
+      const view =  new olView({
+        zoom: 5,
+        center: [2.5, 48.4]
       });
 
       const map = new olMap({
@@ -111,17 +100,21 @@ class OpenLayers3Map extends React.Component {
                 opacity: 0.5
             })
         ],
-        view: new olView({
-          zoom: this.props.mapStyle.zoom || 5,
-          center: this.props.mapStyle.center || [2.5, 48.4]
-        })
+        view: view
       })
 
       map.addControl(mousePositionControl)
 
+      var geolocation = new olGeolocation({
+          projection: view.getProjection(),
+          tracking: true
+      });
+
+      geolocation.once('change:position', function() {
+          view.setCenter(geolocation.getPosition());
+      });
+
       this.map = map
-      this.layer = layer
-      this.idSource = id
 
       this.updateStyle(this.props.mapStyle)
     })

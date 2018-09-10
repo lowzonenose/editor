@@ -5,7 +5,7 @@
   "sources": {
     "routier_auto": {
       "type": "vector",
-      "url": "http://calac-4.ign.fr:8080/geoserver/gwc/service/tms/1.0.0/INCA:routier_auto@EPSG:3857@pbf/{z}/{x}/{-y}.pbf"
+      "tiles": ["http://calac-4.ign.fr:8080/geoserver/gwc/service/tms/1.0.0/INCA:routier_auto@EPSG:3857@pbf/{z}/{x}/{-y}.pbf"]
     }
   },
   "sprite": "",

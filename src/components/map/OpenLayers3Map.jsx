@@ -4,6 +4,7 @@ import style from '../../libs/style.js'
 import isEqual from 'lodash.isequal'
 import { loadJSON } from '../../libs/urlopen'
 import 'ol/ol.css'
+import 'ol-layerswitcher/src/ol-layerswitcher.css'
 
 
 class OpenLayers3Map extends React.Component {
@@ -61,7 +62,7 @@ class OpenLayers3Map extends React.Component {
   componentDidMount() {
     //Load OpenLayers dynamically once we need it
     //TODO: Make this more convenient
-    require.ensure(["ol", "ol-mapbox-style"], ()=> {
+    require.ensure(["ol", "ol-mapbox-style", "ol-layerswitcher"], ()=> {
       console.log('Loaded OpenLayers3 renderer')
 
       const olMap = require('ol/Map').default
@@ -78,6 +79,8 @@ class OpenLayers3Map extends React.Component {
       const olGeolocation = require('ol/Geolocation').default
       const olTileJSON = require('ol/source/TileJSON').default
       const olObserable = require('ol/Observable');
+      const olLayerGroup = require('ol/layer/Group').default;
+      const olLayerSwitcher = require('ol-layerswitcher/src/ol-layerswitcher.js').default;
 
       var mousePositionControl = new olMousePosition({
          coordinateFormat: olCoordinate.createStringXY(4),
@@ -93,17 +96,28 @@ class OpenLayers3Map extends React.Component {
       const map = new olMap({
         target: this.container,
         layers: [
-            new olTileLayer({
-                id: 'OSM',
-                title: 'OSM',
-                source: new OSM(),
-                opacity: 0.5
+            new olLayerGroup({
+                title: 'Overlays',
+                layers: [
+                    new olTileLayer({
+                        id: 'OSM',
+                        title: 'OSM',
+                        source: new OSM(),
+                        opacity: 0.5
+                    })
+                ]
             })
         ],
         view: view
       })
 
       map.addControl(mousePositionControl)
+
+      var layerSwitcher = new olLayerSwitcher({
+        tipLabel: 'Légende' // Optional label for button
+      });
+
+      map.addControl(layerSwitcher);
 
       var geolocation = new olGeolocation({
           projection: view.getProjection(),

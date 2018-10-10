@@ -120,12 +120,12 @@ class OpenLayers3Map extends React.Component {
       map.addControl(layerSwitcher);
 
       var geolocation = new olGeolocation({
-          projection: view.getProjection(),
-          tracking: true
+        projection: view.getProjection(),
+        tracking: true
       });
 
-      geolocation.once('change:position', function() {
-          view.setCenter(geolocation.getPosition());
+      geolocation.on('change:position', function() {
+        view.setCenter(geolocation.getPosition());
       });
 
       this.map = map

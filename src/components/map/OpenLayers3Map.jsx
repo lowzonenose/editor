@@ -29,27 +29,7 @@ class OpenLayers3Map extends React.Component {
 
   updateStyle(newMapStyle) {
     const olms = require('ol-mapbox-style');
-
-    const map = this.map;
-
     olms.apply(this.map, newMapStyle);
-
-    /*
-        map.getLayers().forEach(function (layer) {
-            var source = layer.get("mapbox-source");
-            if source() {
-                olms.applyStyle(layer, newMapStyle, source)
-                .then(function () {
-                    map.removeLayer(layer);
-                    map.addLayer(layer);
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-            }
-        });
-    */
-
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -61,7 +41,6 @@ class OpenLayers3Map extends React.Component {
 
   componentDidMount() {
     //Load OpenLayers dynamically once we need it
-    //TODO: Make this more convenient
     require.ensure(["ol", "ol-mapbox-style", "ol-layerswitcher"], ()=> {
       console.log('Loaded OpenLayers3 renderer')
 

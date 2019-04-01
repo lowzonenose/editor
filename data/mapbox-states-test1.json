@@ -33,6 +33,7 @@
       "id": "population_lt_2m",
       "type": "fill",
       "source": "states",
+      "editable": true,
       "filter": [
         "<=",
         "PERSONS",
@@ -47,6 +48,7 @@
       "id": "2m_lt_population_lte_4m",
       "type": "fill",
       "source": "states",
+      "editable": true,
       "filter": [
         "all",
         [
@@ -69,6 +71,7 @@
       "id": "population_gt_4m",
       "type": "fill",
       "source": "states",
+      "editable": true,
       "filter": [
         ">",
         "PERSONS",
@@ -83,6 +86,7 @@
       "id": "state_outlines",
       "type": "line",
       "source": "states",
+      "editable": true,
       "minzoom": 0,
       "maxzoom": 6,
       "paint": {
